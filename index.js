@@ -16,6 +16,7 @@ const state = {
         { name: "Prof. Goose", price: 72, occupation: "driver" },
     ]
 }
+
 const table = document.createElement("table");
 
 function randFreelancer() {
@@ -39,6 +40,7 @@ function createTbHeader() {
 //Generate Table Rows with details
 
 function createTbBody() {
+
     let tBody = table.createTBody();
     for (let element of state.abc) {
         let row = tBody.insertRow();
@@ -46,35 +48,58 @@ function createTbBody() {
             let cell = row.insertCell();
             let text = document.createTextNode(element[key]);
             cell.appendChild(text);
+            //Add price class to price cells
+            if (cell.innerText.valueOf() > 0) {
+                cell.classList.add("price");
+            }
         }
     }
     return tBody;
 }
+const tbBody = createTbBody();
 
 function addRandFlRows(){
     let randSelection = Math.floor(Math.random() * state.freelancers.length);
+
     for (let i = 0; i < randSelection; i++) {
-        let row = table.insertRow();
+        let row = tbBody.insertRow();
         let randLancer = randFreelancer();
         for (let key in randLancer) {
             let cell = row.insertCell();
             let text = document.createTextNode(randLancer[key]);
             cell.appendChild(text);
+            if (cell.innerText.valueOf() > 0) {
+                cell.classList.add("price");
+            }
         }
+
     }
 }
 
 function getAvgPrice() {
-    const sumPrice = state.abc.reduce((acc, currentValue) =>  acc + currentValue.price,0);
-    const avgPrice = sumPrice / state.abc.length;
+    const priceVal = tbBody.querySelectorAll("tr .price");
+    const sumPrice = () => {
+        let total = 0;
+        for (let i = 0; i < priceVal.length; i++) {
+            total += +priceVal[i].innerText;
+        }
+        return total;
+    };
+    const avgPrice = Math.floor(sumPrice() / priceVal.length);
     return avgPrice.toString();
 }
 
 function updateAvgPrice(){
     const priceLabel = document.querySelector("#price");
+    console.log("here")
     priceLabel.textContent = getAvgPrice();
     return priceLabel;
 }
+// function clearTable() {
+//     while (tbBody.querySelector("tr")) {
+//         tbBody.querySelector("tr").remove();
+//     }
+// }
 
 function addTable() {
     createTbHeader();
@@ -82,6 +107,8 @@ function addTable() {
     addRandFlRows();
     updateAvgPrice();
     document.querySelector("body").append(table);
+
 }
-// setInterval(addTable, 1000);
+addTable();
+// setInterval(addTable, 5000);
 //Add table to HTML
