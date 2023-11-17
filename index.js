@@ -1,6 +1,5 @@
 //Create a state
 const state = {
-    average: 10,
     abc : [
         { name: "Carol", price: 70, occupation: "programmer" },
         { name: "Bob", price: 50, occupation: "teacher" },
@@ -17,14 +16,54 @@ const state = {
         { name: "Prof. Goose", price: 72, occupation: "driver" },
     ]
 }
-//Html Development
-const body = document.querySelector("body");
-const p = document.querySelector("p");
-p.style.fontSize = "1.25rem";
+const table = document.createElement("table");
+
 function randFreelancer() {
     const rand = Math.floor(Math.random() * state.freelancers.length);
     return state.freelancers[rand];
 }
+
+//Create Table Header
+function createTbHeader() {
+    let tHead = table.createTHead();
+    let row = tHead.insertRow();
+    for (let key of Object.keys(state.abc[0])) {
+        let th = document.createElement("th");
+        let text = document.createTextNode(key);
+        th.appendChild(text);
+        row.appendChild(th);
+    }
+    return tHead;
+}
+
+//Generate Table Rows with details
+
+function createTbBody() {
+    let tBody = table.createTBody();
+    for (let element of state.abc) {
+        let row = tBody.insertRow();
+        for (let key in element) {
+            let cell = row.insertCell();
+            let text = document.createTextNode(element[key]);
+            cell.appendChild(text);
+        }
+    }
+    return tBody;
+}
+
+function addRandFlRows(){
+    let randSelection = Math.floor(Math.random() * state.freelancers.length);
+    for (let i = 0; i < randSelection; i++) {
+        let row = table.insertRow();
+        let randLancer = randFreelancer();
+        for (let key in randLancer) {
+            let cell = row.insertCell();
+            let text = document.createTextNode(randLancer[key]);
+            cell.appendChild(text);
+        }
+    }
+}
+
 function getAvgPrice() {
     const sumPrice = state.abc.reduce((acc, currentValue) =>  acc + currentValue.price,0);
     const avgPrice = sumPrice / state.abc.length;
@@ -37,52 +76,12 @@ function updateAvgPrice(){
     return priceLabel;
 }
 
-// function clearTable() {
-//     while (table.rows.length) {
-//         table.
-//     }
-// }
-const table = document.createElement("table");
-
-//Create Table Header
-function createTbHeader() {
-    let tHead = table.createTHead();
-    let row = tHead.insertRow();
-    for (let key of Object.keys(state.abc[0])) {
-        let th = document.createElement("th");
-        let text = document.createTextNode(key);
-        th.appendChild(text);
-        row.appendChild(th);
-    }
-}
-
-//Generate Table Rows with details
-function addRows() {
-    for (let element of state.abc) {
-        let row = table.insertRow();
-        for (let key in element) {
-            let cell = row.insertCell();
-            let text = document.createTextNode(element[key]);
-            cell.appendChild(text);
-        }
-    }
-}
-
-function addRandFlRows(){
-    let row = table.insertRow();
-    let randLancer = randFreelancer();
-    for (let key in randLancer) {
-        let cell = row.insertCell();
-        let text = document.createTextNode(randLancer[key]);
-        cell.appendChild(text);
-    }
-}
-function render() {
+function addTable() {
     createTbHeader();
-    addRows();
+    createTbBody();
     addRandFlRows();
     updateAvgPrice();
-    body.append(table);
+    document.querySelector("body").append(table);
 }
-render();
+// setInterval(addTable, 1000);
 //Add table to HTML
