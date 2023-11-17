@@ -50,14 +50,5 @@ for (let element of abc) {
     }
 }
 
-for (let element of freelancers) {
-    let row = table.insertRow();
-    for (let key in element) {
-        let cell = row.insertCell();
-        let text = document.createTextNode(element[key]);
-        cell.appendChild(text);
-    }
-}
-
 //Add table to HTML
 body.append(table);
