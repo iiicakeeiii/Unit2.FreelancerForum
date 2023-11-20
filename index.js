@@ -34,17 +34,14 @@ function createTbHeader() {
         th.appendChild(text);
         row.appendChild(th);
     }
-    return tHead;
 }
-const tbHead = createTbHeader();
 
 //Generate Table Rows with details
-
 function createTbBody() {
 
-    let tBody = table.createTBody();
+    table.createTBody();
     for (let element of state.abc) {
-        let row = tBody.insertRow();
+        let row = table.querySelector("tbody").insertRow();
         for (let key in element) {
             let cell = row.insertCell();
             let text = document.createTextNode(element[key]);
@@ -53,19 +50,18 @@ function createTbBody() {
             if (cell.innerText.valueOf() > 0) {
                 cell.classList.add("price");
             }
+
         }
     }
-    return tBody;
 }
-const tbBody = createTbBody();
 
 function addRandFlRows(){
-    let randSelection = Math.floor(Math.random() * state.freelancers.length);
+    const randSelection = Math.floor(Math.random() * state.freelancers.length);
 
     for (let i = 0; i < randSelection; i++) {
-        let row = tbBody.insertRow();
-        let randLancer = randFreelancer();
-        for (let key in randLancer) {
+        let row = table.querySelector("tbody").insertRow();
+        const randLancer = randFreelancer();
+        for (const key in randLancer) {
             let cell = row.insertCell();
             let text = document.createTextNode(randLancer[key]);
             cell.appendChild(text);
@@ -78,6 +74,7 @@ function addRandFlRows(){
 }
 
 function getAvgPrice() {
+    const tbBody = table.querySelector("tbody");
     const priceVal = tbBody.querySelectorAll("tr .price");
     const sumPrice = () => {
         let total = 0;
@@ -96,6 +93,8 @@ function updateAvgPrice(){
     return priceLabel;
 }
 function clearTable() {
+    let tbHead = table.querySelector("thead");
+    let tbBody = table.querySelector("tbody");
     while (tbBody.querySelector("tr")) {
         tbBody.querySelector("tr").remove();
     }
@@ -112,9 +111,8 @@ function addTable() {
     document.querySelector("body").append(table);
 
 }
-// addTable();
+addTable();
 setInterval(() =>{
     clearTable();
     addTable();
-},  1000);
-//Add table to HTML
+},  5000);
