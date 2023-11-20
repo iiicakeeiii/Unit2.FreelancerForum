@@ -36,6 +36,7 @@ function createTbHeader() {
     }
     return tHead;
 }
+const tbHead = createTbHeader();
 
 //Generate Table Rows with details
 
@@ -91,15 +92,17 @@ function getAvgPrice() {
 
 function updateAvgPrice(){
     const priceLabel = document.querySelector("#price");
-    console.log("here")
     priceLabel.textContent = getAvgPrice();
     return priceLabel;
 }
-// function clearTable() {
-//     while (tbBody.querySelector("tr")) {
-//         tbBody.querySelector("tr").remove();
-//     }
-// }
+function clearTable() {
+    while (tbBody.querySelector("tr")) {
+        tbBody.querySelector("tr").remove();
+    }
+    while (tbHead.querySelector("tr")) {
+        tbHead.querySelector("tr").remove();
+    }
+}
 
 function addTable() {
     createTbHeader();
@@ -109,6 +112,9 @@ function addTable() {
     document.querySelector("body").append(table);
 
 }
-addTable();
-// setInterval(addTable, 5000);
+// addTable();
+setInterval(() =>{
+    clearTable();
+    addTable();
+},  1000);
 //Add table to HTML
